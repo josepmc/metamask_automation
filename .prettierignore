@@ -1,0 +1,8 @@
+node_modules
+tmp
+test-results*
+.vscode
+.env
+playwright-report*
+.DS_Store
+pnpm-lock.yaml

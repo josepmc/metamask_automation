@@ -1,0 +1,14 @@
+{
+  "name": "@josepmc/web",
+  "version": "0.0.1",
+  "description": "Web Automation",
+  "author": "josepmc <5087962+josepmc@users.noreply.github.com>",
+  "private": true,
+  "dependencies": {
+    "@josepmc/shared": "workspace:*",
+    "@playwright/test": "*"
+  },
+  "devDependencies": {
+    "@types/node": "20.9.0"
+  }
+}

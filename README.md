@@ -10,6 +10,11 @@
 - [Local Environment Setup](#local-environment-setup)
   - [Run with Docker Compose](#run-with-docker-compose)
   - [Run with Node.js](#run-with-nodejs)
+- [Run the Tests](#run-the-tests)
+  - [Run with Docker](#run-with-docker)
+  - [Run Locally](#run-locally)
+- [Improvements and Changes](#improvements-and-changes)
+- [Further Considerations and Improvements](#further-considerations-and-improvements)
 
 ## Requirements
 
@@ -78,6 +83,7 @@ By selecting this token, the application will allow you to mint 100 tokens at a 
    ```
 
 3. Access the application at [http://localhost:3000](http://localhost:3000) using your browser
+4. The app has been modified so that the tests will be ran by default when starting the docker container
 
 ### Run with Node.js
 
@@ -85,8 +91,53 @@ By selecting this token, the application will allow you to mint 100 tokens at a 
 2. Execute the following commands:
 
    ```bash
-   npm install
-   npm run build && npm run start
+   pnpm install
+   pnpm run build && pnpm run start
    ```
 
 3. Access the application at [http://localhost:3000](http://localhost:3000) using your browser
+
+## Run the Tests
+
+### Run with Docker
+
+1. Open a terminal at the root path of this project.
+2. Execute the following command:
+
+   ```bash
+   docker-compose up --exit-code-from playwright --abort-on-container-exit --remove-orphans
+   ```
+
+3. This command will start the application along with the tests and will exit upon completion.
+4. You can find the test results in the `packages/e2e/playwright-results` directory and the HTML report in the `packages/e2e/playwright-results-html` directory.
+
+### Run Locally
+
+1. Open a terminal at the root path of this project.
+2. Execute the following command:
+
+   ```bash
+   pnpm --filter @josepmc/e2e run test:ci
+   ```
+
+3. This command will generate the test definitions and run the tests.
+4. You can find the test results in the `packages/e2e/playwright-results` directory and the HTML report in the `packages/e2e/playwright-results-html` directory.
+
+## Improvements and Changes
+
+This fork includes several improvements compared to the original project:
+
+- The project has been restructured into a monorepo.
+- The project now uses `pnpm` instead of `npm`.
+- The Docker configuration now includes a test container.
+- New CI pipelines have been added to run tests automatically.
+- End-to-end (E2E) tests have been implemented.
+
+### Further Considerations and Improvements
+
+- For the purpose of this exercise, no external library was used to automate the browsers. In a professional setup, you might consider using [@lidofinance/wallets-testing-wallets](https://www.npmjs.com/package/@lidofinance/wallets-testing-wallets).
+- In a real setup, the contracts would be deployed to a local foundry node for testing.
+- The application currently uses non-standard `data-test` attributes for test IDs. Since Playwright only supports one kind of test ID, these should be migrated to `data-testid` to simplify the locators.
+- Locators should also be used in the application. As this is a monorepo, all the necessary steps are in place, but they have not been implemented yet.
+- The application has some inherent issues. For example, if the automation runs too quickly, the minting transaction may not have the correct value (1e-18 vs 100). These would be considered bugs in a real-world application.
+- The new headless mode does not consistently support extensions on Linux, only on macOS. While this is not a problem since we have Xvfb, it would increase the speed.

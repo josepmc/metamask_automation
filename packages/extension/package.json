@@ -1,0 +1,20 @@
+{
+  "name": "@josepmc/extension",
+  "version": "0.0.1",
+  "description": "Metamask Extension Automation",
+  "author": "josepmc <5087962+josepmc@users.noreply.github.com>",
+  "private": true,
+  "dependencies": {
+    "@josepmc/shared": "workspace:*",
+    "@playwright/test": "*",
+    "@tomjs/unzip-crx": "^1.1.3",
+    "@types/node": "20.9.0",
+    "node-fetch": "^2.7.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.12",
+    "@types/node-rsa": "^1.1.4",
+    "chrome-types": "^0.1.329"
+  }
+}

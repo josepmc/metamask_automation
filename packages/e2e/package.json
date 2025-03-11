@@ -1,0 +1,39 @@
+{
+  "name": "@josepmc/e2e",
+  "version": "0.0.1",
+  "author": "josepmc <5087962+josepmc@users.noreply.github.com>",
+  "scripts": {
+    "docker": "pnpm docker:build && pnpm docker:run",
+    "docker:build": "docker build --build-arg PLAYWRIGHT_VERSION=$(node -p \"require('./package.json').dependencies['@playwright/test']\") -t josepmc/playwright .",
+    "docker:screenshots": "UPDATE_SNAPSHOTS=true pnpm docker",
+    "docker:mac": "pnpm docker:run test -- --ui-host 0.0.0.0 --ui-port 9324",
+    "docker:run": "docker run --init -v $(pwd):/app -p 9323:9323 -p 9324:9324 --rm -e CI=\"${CI:-false}\" -e SHARDED=\"${SHARDED:-false}\" -e UPDATE_SNAPSHOTS=\"${UPDATE_SNAPSHOTS:-false}\" -e EXTENSION_PATH=\"${EXTENSION_PATH:-}\" -e CHROME_STORE=\"${CHROME_STORE:-}\" -e REUSE_DIRECTORY=\"${REUSE_DIRECTORY:-}\" -e EXTRA_ARGS=\"${EXTRA_ARGS:-}\" josepmc/playwright",
+    "report": "playwright show-report",
+    "test": "pnpm playwright test ${EXTRA_ARGS:-}",
+    "test:screenshots": "UPDATE_SNAPSHOTS=true pnpm test",
+    "test:ci": "pnpm test:gen && pnpm playwright test",
+    "test:gen": "bddgen"
+  },
+  "dependencies": {
+    "@josepmc/extension": "workspace:*",
+    "@josepmc/shared": "workspace:*",
+    "@josepmc/web": "workspace:*",
+    "@playwright/test": "*",
+    "dotenv": "^16.4.7",
+    "file-type": "^16.5.4",
+    "fs-extra": "^11.3.0",
+    "jest": "^29.7.0",
+    "playwright-bdd": "8.2.1",
+    "ts-node": "^10.9.2",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.14",
+    "@types/node": "20.9.0",
+    "chrome-types": "^0.1.329",
+    "concurrently": "^9.1.2",
+    "typescript": "5.4.5"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@josepmc/shared",
+  "version": "0.0.1",
+  "description": "Shared Web Automation",
+  "author": "josepmc <5087962+josepmc@users.noreply.github.com>",
+  "private": true,
+  "scripts": {
+  },
+  "dependencies": {
+    "@playwright/test": "*",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.9.0",
+    "tsx": "^4.19.2"
+  }
+}

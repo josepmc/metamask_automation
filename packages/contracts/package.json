@@ -1,0 +1,13 @@
+{
+  "name": "@librecapital/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.1",
+    "solc": "0.8.23-fixed"
+  },
+  "devDependencies": {
+  }
+}

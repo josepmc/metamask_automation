@@ -1,0 +1,54 @@
+name: fullstack-task
+
+services:
+  web:
+    image: librecapital/app
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+      target: dev
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # TODO: Deploy contracts with foundry on a local node for testing
+  # contracts:
+  #   image: librecapital/contracts
+  #   profiles:
+  #     - contracts
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfiles/contracts.Dockerfile
+  #   ports:
+  #     - 8545:8545
+
+  playwright:
+    image: josepmc/playwright
+    build:
+      context: .
+      dockerfile: docker/e2e.Dockerfile
+    entrypoint: ["xvfb-run", "/bin/sh", "-c"]
+    command: ["pnpm --filter @josepmc/e2e run test ${FILTER:+--grep $FILTER} --grep-invert @skip"]
+    network_mode: host
+    environment:
+      - HEADLESS=false
+      - BASE_URL=http://localhost:3000
+      - SHARDED=${SHARDED:-false}
+      - UPDATE_SNAPSHOTS=${UPDATE_SNAPSHOTS:-false}
+      - EXTENSION_PATH=${EXTENSION_PATH:-}
+      - CHROME_STORE=${CHROME_STORE:-true}
+      - EXTRA_ARGS=${EXTRA_ARGS:-}
+    init: true
+    ports:
+      - 9222:9222
+      - 9323:9323
+    volumes:
+      - ./packages/e2e/tmp:/app/packages/e2e/tmp
+      - ./packages/e2e/playwright-report:/app/packages/e2e/playwright-report
+      - ./packages/e2e/playwright-report-html:/app/packages/e2e/playwright-report-html
+    depends_on:
+      - web
